@@ -146,6 +146,15 @@ class HomeScreen extends StatelessWidget {
                                 overflow: TextOverflow.fade,
                               ),
                             ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Creado: ${_formatDate(note.createdAt)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -162,3 +171,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+// Add this helper method at the class level
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
