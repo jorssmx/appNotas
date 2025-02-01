@@ -187,13 +187,26 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              'Creado: ${_formatDate(note.createdAt)}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                                fontStyle: FontStyle.italic,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Creado: ${_formatDate(note.createdAt)}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                Text(
+                                  'Hora: ${_formatTime(note.createdAt)}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -215,4 +228,11 @@ class HomeScreen extends StatelessWidget {
 // Add this helper method at the class level
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+// ... at the bottom of the file, add this new method:
+  String _formatTime(DateTime date) {
+    String hours = date.hour.toString().padLeft(2, '0');
+    String minutes = date.minute.toString().padLeft(2, '0');
+    return '$hours:$minutes';
   }
