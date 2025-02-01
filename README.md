@@ -1,2 +1,2 @@
 # appNotas
-app de Notas en Flutter 
+app de Notas básica en Flutter o Dart. 
