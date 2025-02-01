@@ -6,14 +6,18 @@ class HomeScreen extends StatelessWidget {
   final List<Note> notes;
   final Function(Note) onNoteAdded;
   final Function(Note) onNoteUpdated;
-  final Function(Note) onNoteDeleted;  // Add this line
+  final Function(Note) onNoteDeleted;
+  final String appTitle;
+  final Function(String) onTitleChanged;
 
   const HomeScreen({
     Key? key, 
     required this.notes,
     required this.onNoteAdded,
     required this.onNoteUpdated,
-    required this.onNoteDeleted,  // Add this line
+    required this.onNoteDeleted,
+    required this.appTitle,
+    required this.onTitleChanged,
   }) : super(key: key);
 
   void _addNote(BuildContext context) async {
@@ -49,10 +53,46 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.blue,
         centerTitle: true,
-        title: const Text(
-          'Notas Jorss',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          appTitle,  // Use the appTitle parameter instead of hardcoded text
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit, size: 20),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  final TextEditingController titleController = 
+                      TextEditingController(text: appTitle);  // Use current appTitle
+                  return AlertDialog(
+                    title: const Text('Cambiar título de la app'),
+                    content: TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        labelText: 'Nuevo título',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          onTitleChanged(titleController.text);  // Call onTitleChanged
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Guardar'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: notes.isEmpty
           ? Center(

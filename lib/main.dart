@@ -33,11 +33,14 @@ class NotesApp extends StatefulWidget {
 class _NotesAppState extends State<NotesApp> {
   final List<Note> _notes = [];
   static const String _storageKey = 'notes';
+  static const String _titleKey = 'app_title';
+  String _appTitle = 'Notas Jorss';
 
   @override
   void initState() {
     super.initState();
     _loadNotes();
+    _loadTitle();
   }
 
   Future<void> _loadNotes() async {
@@ -59,10 +62,27 @@ class _NotesAppState extends State<NotesApp> {
     await prefs.setStringList(_storageKey, notesJson);
   }
 
+  Future<void> _loadTitle() async {  // Add this method
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _appTitle = prefs.getString(_titleKey) ?? 'Notas Jorss';
+    });
+  }
+
+  Future<void> _saveTitle(String newTitle) async {  // Add this method
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_titleKey, newTitle);
+    setState(() {
+      _appTitle = newTitle;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return HomeScreen(
       notes: _notes,
+      appTitle: _appTitle,  // Add this
+      onTitleChanged: _saveTitle,  // Add this
       onNoteAdded: (Note note) {
         setState(() {
           _notes.add(note);
